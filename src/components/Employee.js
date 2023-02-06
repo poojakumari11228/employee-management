@@ -1,7 +1,6 @@
 function Employee(props) {
 
     return <div className="Content">
-        {/*<h1>Employee</h1>*/}
 
         <h1>{props.name}</h1>
         <h1>{props.id}</h1>

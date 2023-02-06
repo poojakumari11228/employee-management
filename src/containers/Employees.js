@@ -1,16 +1,14 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Employee from "../components/Employee";
 import {endPoint} from "../Config/endpoints";
 
-function Employees(){
+function Employees() {
 
-    const [employees,setEmployees] = useState([]);
-
+    const [employees, setEmployees] = useState([]);
 
     const fetchEmps = () => {
-        console.log("fetchAll");
         axios.get(endPoint.getBaseUrl)
             .then(response => {
                 setEmployees(response.data);
@@ -22,7 +20,7 @@ function Employees(){
 
     useEffect(() => {
         fetchEmps()
-    },[]);
+    }, []);
 
     const empsList = employees.map(emp => {
 
@@ -41,11 +39,8 @@ function Employees(){
         </>
 
 
-
     });
 
-
-    
 
     return <div className="Product">
         {empsList}

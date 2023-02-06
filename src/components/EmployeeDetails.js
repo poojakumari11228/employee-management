@@ -1,5 +1,5 @@
-import {useState, useEffect, Fragment, useRef, useContext} from "react";
-import {useParams, redirect, useNavigate, Link} from "react-router-dom"
+import {useState, useEffect, useContext} from "react";
+import {useParams, useNavigate} from "react-router-dom"
 import axios from "axios";
 import Project from "./Project";
 import './EmployeeDetails.css'
@@ -18,7 +18,6 @@ function EmployeeDetails() {
     const navigate = useNavigate();
 
 
-
     const fetchEmplById = () => {
         axios.get(endPoint.getBaseUrl + id)
             .then(response => {
@@ -30,7 +29,7 @@ function EmployeeDetails() {
             })
     }
 
-    useEffect(fetchEmplById, [{id}]);
+    useEffect(fetchEmplById, [id]);
 
     const deleteEmp = () => {
 
@@ -50,8 +49,7 @@ function EmployeeDetails() {
         navigate("/manage-projects", {state: {id: {id}}});
     }
 
-    return (
-        <>
+    return (<>
 
             <div className="ProductDetail" style={{"width": "100%"}}>
                 <h1>Employe Details</h1>
@@ -62,12 +60,11 @@ function EmployeeDetails() {
                 {employeeDetails.projectList && employeeDetails.projectList.length > 0 ? (<>
                     <h1> Details</h1>
                     {/*{console.log(employeeDetails.projectList)}*/}
-                    {employeeDetails.projectList.map(project => (
-                        <Project
-                            key={project.id}
-                            id={project.id}
-                            name={project.name}
-                        />))}
+                    {employeeDetails.projectList.map(project => (<Project
+                        key={project.id}
+                        id={project.id}
+                        name={project.name}
+                    />))}
                 </>) : <h1>No Projects</h1>}
 
                 <input type='button' value='Delete' onClick={deleteEmp}/>
@@ -78,8 +75,7 @@ function EmployeeDetails() {
                 <label onClick={manageProjectsBtn}>Manage Projects</label>
 
             </div>
-        </>
-    );
+        </>);
 
 
 }

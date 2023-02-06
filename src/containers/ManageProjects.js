@@ -1,9 +1,6 @@
 import {useNavigate} from "react-router";
-import {useContext, useEffect, useRef, useState} from "react";
-import {AssignedProjectsContext, ManageProjectsContext} from "../Context/EmployeContext";
-import Project from "../components/Project";
+import { useEffect, useRef, useState} from "react";
 import AssignedProject from "../components/AssignedProject";
-import assignedProject from "../components/AssignedProject";
 import axios from "axios";
 import {endPoint} from "../Config/endpoints";
 import {useLocation} from "react-router-dom";
@@ -12,62 +9,34 @@ import {useLocation} from "react-router-dom";
 function ManageProjects() {
 
     const navigate = useNavigate();
-    const [manageProject, setManageProject] = useContext(ManageProjectsContext);
-
     const [filterProject, setFilterProject] = useState([]);
-
-    // const projects = manageProject.projectList;
-
     const filterRef = useRef();
-
-    const {state}= useLocation();
-
-    console.log(manageProject);
+    const {state} = useLocation();
 
 
-    const fetchAllProjects = () =>{
-        // console.log("----------")
+    const fetchAllProjects = () => {
         axios.get(endPoint.getProjectUrl)
             .then(response => {
                 setFilterProject(response.data);
             })
-            .catch(error =>{
+            .catch(error => {
                 console.log(error)
             })
 
     }
 
     useEffect(fetchAllProjects, []);
+    const fetchFilterProjects = () => {
 
-    // const projectsList = projects.map(p => {
-    //
-    //     return <>
-    //         <div>
-    //             <AssignedProject id={p.id}
-    //                              name={p.name}
-    //             >
-    //
-    //             </AssignedProject>
-    //
-    //         </div>
-    //     </>
-    // });
-
-    const fetchFilterProjects =() =>{
-
-        let name =  filterRef.current['name'].value;
+        let name = filterRef.current['name'].value;
         let location = filterRef.current['location'].value;
-        console.log("Filter by")
 
         if (name === '0' || location === '') {
             alert("PLease Enter details to filter!")
-        }
-        else {
-
+        } else {
             axios.get(endPoint.getProjectUrl, {
                 params: {
-                    name: name+"",
-                    location: location
+                    name: name + "", location: location
                 }
             }).then(response => {
                 setFilterProject(response.data);
@@ -79,9 +48,7 @@ function ManageProjects() {
 
     }
 
-
     const filterProjectsList = filterProject.map(p => {
-
         return <>
             <div>
                 <AssignedProject id={p.id}
@@ -89,35 +56,29 @@ function ManageProjects() {
                                  eid={state.id}
                 >
                 </AssignedProject>
-
             </div>
         </>
     });
 
-
-
-
     return <div>
+        <br/>
+        <form ref={filterRef}>
+            <div>
+                Name: <input type="text" name='name'/> <br/>
+                Location: <input type="text" name='location'/>
+                <input type='button' onClick={fetchFilterProjects} value='Filter'/>
 
-        <br />
-       <form ref={filterRef}>
-           <div>
-               Name: <input type="text" name='name' /> <br />
-               Location: <input type="text" name='location'/>
-               <input type='button' onClick={fetchFilterProjects}  value='Filter'/>
-
-           </div>
-       </form>
-        <div className="Spec" >
-            <button  onClick={()=>{navigate(-1)}}> Back</button>
+            </div>
+        </form>
+        <div className="Spec">
+            <button onClick={() => {
+                navigate(-1)
+            }}> Back
+            </button>
         </div>
-        {/*<>{projectsList}*/}
-        {/*</>*/}
-
         <>
             {filterProjectsList}
         </>
-
 
     </div>
 }
